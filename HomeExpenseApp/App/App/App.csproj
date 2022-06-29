@@ -9,4 +9,13 @@
     <PackageReference Include="Xamarin.Forms" Version="5.0.0.2196" />  
     <PackageReference Include="Xamarin.Essentials" Version="1.7.0" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Views\ExpensesHomePage.xaml.cs">
+      <DependentUpon>ExpensesHomePage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\ManageExpensesPage.xaml.cs">
+      <DependentUpon>ManageExpensesPage.xaml</DependentUpon>
+    </Compile>
+  </ItemGroup>
 </Project>

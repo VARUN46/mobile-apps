@@ -1,17 +1,17 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="App.Views.AboutPage"
+             x:Class="App.Views.ExpensesHomePage"
              xmlns:vm="clr-namespace:App.ViewModels"
              Title="{Binding Title}">
     
     <ContentPage.BindingContext>
-        <vm:AboutViewModel />
+        <vm:ExpensesHomeViewModel />
     </ContentPage.BindingContext>
     
     <ContentPage.Resources>
         <ResourceDictionary>
-            <Color x:Key="Accent">#96d1ff</Color>
+            <Color x:Key="Accent">#E8EAF6</Color>
         </ResourceDictionary>
     </ContentPage.Resources>
 
@@ -21,9 +21,7 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <StackLayout BackgroundColor="{StaticResource Accent}" VerticalOptions="FillAndExpand" HorizontalOptions="Fill">
-            <StackLayout Orientation="Horizontal" HorizontalOptions="Center" VerticalOptions="Center">
-                <Label Padding="10" Text="My Home Expenses Summary"/>
-            </StackLayout>
+            <Label Padding="2" FontSize="Micro" HorizontalTextAlignment="Center" Text="Copyright 2022, All Rights Reserved By Varun Setia."/>
         </StackLayout>
         <ScrollView Grid.Row="1">
             <StackLayout Orientation="Vertical" Padding="30,24,30,24" Spacing="10">

@@ -5,9 +5,9 @@ using Xamarin.Forms;
 
 namespace App.ViewModels
 {
-    public class AboutViewModel : BaseViewModel
+    public class ExpensesHomeViewModel : BaseViewModel
     {
-        public AboutViewModel()
+        public ExpensesHomeViewModel()
         {
             Title = "Expenses Home";
             OpenWebCommand = new Command(async () => await Browser.OpenAsync("https://aka.ms/xamarin-quickstart"));
