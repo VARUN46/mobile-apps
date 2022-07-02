@@ -11,6 +11,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\App.FacadeLayer\App.FacadeLayer.csproj" />
+    <ProjectReference Include="..\..\App.Interfaces\App.Interfaces.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Compile Update="Views\ExpensesHomePage.xaml.cs">
       <DependentUpon>ExpensesHomePage.xaml</DependentUpon>
     </Compile>

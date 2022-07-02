@@ -1,4 +1,6 @@
-﻿using App.Views;
+﻿using App.FacadeLayer.Repository;
+using App.Interfaces.Repository;
+using App.Views;
 using System;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
@@ -12,7 +14,8 @@ namespace App
         {
             InitializeComponent();
 
-         //   DependencyService.Register<MockDataStore>();
+            //   DependencyService.Register<MockDataStore>();
+            DependencyService.Register<IExpenseRepository, ExpenseRepository>();
             MainPage = new AppShell();
         }
 

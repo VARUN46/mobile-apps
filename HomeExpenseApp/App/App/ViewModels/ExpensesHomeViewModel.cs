@@ -1,4 +1,6 @@
-﻿using System;
+﻿using App.Entities.Models;
+using App.Interfaces.Repository;
+using System;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Essentials;
@@ -8,12 +10,33 @@ namespace App.ViewModels
 {
     public class ExpensesHomeViewModel : BaseViewModel
     {
+        public AddEntryModel EntryModel { get; set; }
+        public ExpenseSummaryModel SummaryModel { get; set; }
+        public ICommand AddPositiveExpense { get; set; }
+        public ICommand AddNegativeExpense { get; set; }
+
+        private IExpenseRepository expenseRepository;
+
         public ExpensesHomeViewModel()
         {
+            EntryModel = new AddEntryModel();
+            SummaryModel = new ExpenseSummaryModel();
+            expenseRepository = DependencyService.Get<IExpenseRepository>();
             Title = "My Personal Expenses";
-            OpenWebCommand = new Command(async () => await Task.FromResult(1));
+            AddPositiveExpense = new Command(() =>
+            {
+                expenseRepository.AddExpenseEntry(EntryModel);
+                SummaryModel = expenseRepository.GetExpenseSummary();
+            });
+            AddNegativeExpense = new Command(() =>
+            {
+                var amount = Convert.ToDecimal(EntryModel.Amount);
+                var finalAmount = amount > 0 ? -amount : amount;
+                EntryModel.Amount = Convert.ToString(finalAmount);
+                expenseRepository.AddExpenseEntry(EntryModel);
+                SummaryModel = expenseRepository.GetExpenseSummary();
+            });
         }
 
-        public ICommand OpenWebCommand { get; }
     }
 }

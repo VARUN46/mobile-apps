@@ -11,5 +11,6 @@ namespace App.Interfaces.Repository
         IEnumerable<EntrySummaryItemModel> GetAllExpenseEntries(int byLatestCount);
         IEnumerable<EntrySummaryItemModel> GetAllExpenseEntries(DateTime month);
         EntryItemDetailsModel GetEntryItemDetails(Guid id);
+        ExpenseSummaryModel GetExpenseSummary();
     }
 }
