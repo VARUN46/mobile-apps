@@ -9,7 +9,7 @@ using Xamarin.Forms;
 
 namespace App.ViewModels
 {
-    public class ExpensesHomeViewModel : BaseViewModel, INotifyPropertyChanged
+    public class ExpensesHomeViewModel : BaseViewModel
     {
         public AddEntryModel EntryModel { get; set; }
         public ExpenseSummaryModel SummaryModel { get; set; }
@@ -43,15 +43,6 @@ namespace App.ViewModels
                 EntryModel = new AddEntryModel();
                 OnPropertyChanged("EntryModel");
             });
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        protected void OnPropertyChanged(string propertyName)
-        {
-            var handler = PropertyChanged;
-            if (handler != null)
-                handler(this, new PropertyChangedEventArgs(propertyName));
         }
 
     }
