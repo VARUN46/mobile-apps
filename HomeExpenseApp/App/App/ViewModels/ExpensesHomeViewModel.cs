@@ -1,6 +1,7 @@
 ﻿using App.Entities.Models;
 using App.Interfaces.Repository;
 using System;
+using System.ComponentModel;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Essentials;
@@ -8,7 +9,7 @@ using Xamarin.Forms;
 
 namespace App.ViewModels
 {
-    public class ExpensesHomeViewModel : BaseViewModel
+    public class ExpensesHomeViewModel : BaseViewModel, INotifyPropertyChanged
     {
         public AddEntryModel EntryModel { get; set; }
         public ExpenseSummaryModel SummaryModel { get; set; }
@@ -27,6 +28,9 @@ namespace App.ViewModels
             {
                 expenseRepository.AddExpenseEntry(EntryModel);
                 SummaryModel = expenseRepository.GetExpenseSummary();
+                OnPropertyChanged("SummaryModel");
+                EntryModel = new AddEntryModel();
+                OnPropertyChanged("EntryModel");
             });
             AddNegativeExpense = new Command(() =>
             {
@@ -35,7 +39,19 @@ namespace App.ViewModels
                 EntryModel.Amount = Convert.ToString(finalAmount);
                 expenseRepository.AddExpenseEntry(EntryModel);
                 SummaryModel = expenseRepository.GetExpenseSummary();
+                OnPropertyChanged("SummaryModel");
+                EntryModel = new AddEntryModel();
+                OnPropertyChanged("EntryModel");
             });
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected void OnPropertyChanged(string propertyName)
+        {
+            var handler = PropertyChanged;
+            if (handler != null)
+                handler(this, new PropertyChangedEventArgs(propertyName));
         }
 
     }
