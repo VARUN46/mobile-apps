@@ -35,5 +35,19 @@
         <StackLayout Orientation="Horizontal">
             <Label Padding="10" Text="Summary here will be based on filter criteria!"/>
         </StackLayout>
+        <ListView x:Name="EmployeeView"
+            ItemsSource="{Binding SummaryList}" IsPullToRefreshEnabled="true"
+                  RowHeight="100">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        <StackLayout Background="rgb(220,220,220)" Margin="5" Padding="20" Orientation="Vertical">
+                            <Label Text="{Binding SummaryText}"/>
+                            <Label Text="{Binding Note}"/>
+                        </StackLayout>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
     </StackLayout>
 </ContentPage>

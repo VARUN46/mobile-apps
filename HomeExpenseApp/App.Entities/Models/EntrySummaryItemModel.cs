@@ -9,5 +9,7 @@ namespace App.Entities.Models
         public Guid Id { get; set; }
         public decimal Amount { get; set; }
         public string Date { get; set; }
+        public string SummaryText { get; set; }
+        public string Note { get; set; }
     }
 }

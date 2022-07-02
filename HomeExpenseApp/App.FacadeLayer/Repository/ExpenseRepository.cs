@@ -62,13 +62,15 @@ namespace App.FacadeLayer.Repository
             try
             {
                 data = (from entry in entries
-                        where entry.NotedDate == month
+                        where entry.NotedDate.Month == month.Month
                         orderby entry.NotedDate descending
                         select new EntrySummaryItemModel
                         {
                             Amount = entry.Amount,
-                            Date = entry.NotedDate.ToString("ddd,MMM yyyy"),
-                            Id = entry.Id
+                            Date = entry.NotedDate.ToString("ddd, d MMM yyyy"),
+                            Id = entry.Id,
+                            SummaryText = string.Format("{0} spent on {1}", entry.Amount, entry.NotedDate.ToString("ddd, d MMM yyyy")),
+                            Note = entry.Note
                         }).ToList();
             }
             catch (Exception)

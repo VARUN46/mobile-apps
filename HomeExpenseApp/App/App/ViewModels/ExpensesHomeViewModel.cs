@@ -20,10 +20,10 @@ namespace App.ViewModels
 
         public ExpensesHomeViewModel()
         {
+            Title = "My Personal Expenses";
             EntryModel = new AddEntryModel();
             SummaryModel = new ExpenseSummaryModel();
             expenseRepository = DependencyService.Get<IExpenseRepository>();
-            Title = "My Personal Expenses";
             AddPositiveExpense = new Command(() =>
             {
                 expenseRepository.AddExpenseEntry(EntryModel);
