@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Essentials;
 using Xamarin.Forms;
@@ -9,8 +10,8 @@ namespace App.ViewModels
     {
         public ExpensesHomeViewModel()
         {
-            Title = "Expenses Home";
-            OpenWebCommand = new Command(async () => await Browser.OpenAsync("https://aka.ms/xamarin-quickstart"));
+            Title = "My Personal Expenses";
+            OpenWebCommand = new Command(async () => await Task.FromResult(1));
         }
 
         public ICommand OpenWebCommand { get; }
