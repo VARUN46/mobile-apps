@@ -24,6 +24,7 @@ namespace App.FacadeLayer.Repository
                     Note = addEntryModel.Note,
                     NotedDate = addEntryModel.IsPastExpense ? DateTime.Now.AddMonths(-1) : DateTime.Now,
                     UpdatedDate = DateTime.Now,
+                    GeoLocation = addEntryModel.GeoLocation,
                 });
                 isAdded = true;
             }
@@ -70,7 +71,8 @@ namespace App.FacadeLayer.Repository
                             Date = entry.NotedDate.ToString("ddd, d MMM yyyy"),
                             Id = entry.Id,
                             SummaryText = string.Format("{0} spent on {1}", entry.Amount, entry.NotedDate.ToString("ddd, d MMM yyyy")),
-                            Note = entry.Note
+                            Note = entry.Note,
+                            GeoLocation = entry.GeoLocation
                         }).ToList();
             }
             catch (Exception)

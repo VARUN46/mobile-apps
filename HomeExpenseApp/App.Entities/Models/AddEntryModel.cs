@@ -9,5 +9,6 @@ namespace App.Entities.Models
         public string Amount { get; set; }
         public string Note { get; set; }
         public bool IsPastExpense { get; set; }
+        public string GeoLocation { get; set; }
     }
 }

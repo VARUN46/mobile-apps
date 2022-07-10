@@ -26,10 +26,15 @@ namespace App.ViewModels
             EntryModel = new AddEntryModel();
             SummaryModel = new ExpenseSummaryModel();
             expenseRepository = DependencyService.Get<IExpenseRepository>();
-            AddPositiveExpense = new Command(() =>
+            AddPositiveExpense = new Command(async () =>
             {
                 if (CanSubmitData())
                 {
+                    var location = await Geolocation.GetLastKnownLocationAsync();
+                    if (location != null)
+                    {
+                        EntryModel.GeoLocation = $"Latitude: {location.Latitude}, Longitude: {location.Longitude}, Altitude: {location.Altitude}";
+                    }
                     expenseRepository.AddExpenseEntry(EntryModel);
                     SummaryModel = expenseRepository.GetExpenseSummary();
                     OnPropertyChanged("SummaryModel");
@@ -44,10 +49,15 @@ namespace App.ViewModels
 
             });
 
-            AddNegativeExpense = new Command(() =>
+            AddNegativeExpense = new Command(async () =>
             {
                 if (CanSubmitData())
                 {
+                    var location = await Geolocation.GetLastKnownLocationAsync();
+                    if (location != null)
+                    {
+                        EntryModel.GeoLocation = $"Latitude: {location.Latitude}, Longitude: {location.Longitude}, Altitude: {location.Altitude}";
+                    }
                     var amount = Convert.ToDecimal(EntryModel.Amount);
                     var finalAmount = amount > 0 ? -amount : amount;
                     EntryModel.Amount = Convert.ToString(finalAmount);

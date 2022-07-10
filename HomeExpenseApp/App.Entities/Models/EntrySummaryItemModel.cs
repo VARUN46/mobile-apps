@@ -11,5 +11,6 @@ namespace App.Entities.Models
         public string Date { get; set; }
         public string SummaryText { get; set; }
         public string Note { get; set; }
+        public string GeoLocation { get; set; }
     }
 }
