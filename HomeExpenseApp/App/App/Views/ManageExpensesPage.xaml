@@ -36,7 +36,7 @@
             <Label Padding="10" Text="Summary here will be based on filter criteria!"/>
         </StackLayout>
         <ListView x:Name="EmployeeView"
-            ItemsSource="{Binding SummaryList}" IsPullToRefreshEnabled="true"
+            ItemsSource="{Binding SummaryList}"
                   RowHeight="100">
             <ListView.ItemTemplate>
                 <DataTemplate>

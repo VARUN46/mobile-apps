@@ -30,7 +30,9 @@
                     <Label Text="{Binding SummaryModel.PreviousMonthSpent}" FontSize="Title"/>
                     <Label Text="{Binding SummaryModel.FutureMonthForecast}" FontSize="Title"/>
                 </StackLayout>
-                <StackLayout Margin="0,50,0,0" Padding="10,30,10,30" Background="rgb(220,220,220)">
+                <StackLayout Margin="0,50,0,0" Padding="0,0,0,30" Background="rgb(220,220,220)">
+                    <Label HorizontalTextAlignment="Center" IsVisible="{Binding HasError}" BackgroundColor="#D50000" TextColor="#FFF" Text="{Binding ErrorMessage}"/>
+                    <StackLayout Padding="10">
                     <Label FontSize="Large" FontAttributes="Bold" HorizontalTextAlignment="Center" Text="Add Expense"/>
                     <Entry Text="{Binding EntryModel.Amount}" Keyboard="Numeric" FontSize="30" Placeholder="Eg. 100"/>
                     <Entry Text="{Binding EntryModel.Note}" FontSize="Medium" Placeholder="Eg. Cold drink, Adjustments, etc."/>
@@ -54,6 +56,7 @@
                         </Grid>
                     </StackLayout>
                 </StackLayout>
+            </StackLayout>
             </StackLayout>
         </ScrollView>
     </Grid>

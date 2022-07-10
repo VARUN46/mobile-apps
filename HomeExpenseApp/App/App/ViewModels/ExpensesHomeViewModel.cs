@@ -15,6 +15,8 @@ namespace App.ViewModels
         public ExpenseSummaryModel SummaryModel { get; set; }
         public ICommand AddPositiveExpense { get; set; }
         public ICommand AddNegativeExpense { get; set; }
+        public string ErrorMessage { get; set; }
+        public bool HasError { get; set; }
 
         private IExpenseRepository expenseRepository;
 
@@ -26,23 +28,73 @@ namespace App.ViewModels
             expenseRepository = DependencyService.Get<IExpenseRepository>();
             AddPositiveExpense = new Command(() =>
             {
-                expenseRepository.AddExpenseEntry(EntryModel);
-                SummaryModel = expenseRepository.GetExpenseSummary();
-                OnPropertyChanged("SummaryModel");
-                EntryModel = new AddEntryModel();
-                OnPropertyChanged("EntryModel");
+                if (CanSubmitData())
+                {
+                    expenseRepository.AddExpenseEntry(EntryModel);
+                    SummaryModel = expenseRepository.GetExpenseSummary();
+                    OnPropertyChanged("SummaryModel");
+                    EntryModel = new AddEntryModel();
+                    OnPropertyChanged("EntryModel");
+                    ErrorMessagePresenter();
+                }
+                else
+                {
+                    ErrorMessagePresenter("Invalid Input");
+                }
+
             });
+
             AddNegativeExpense = new Command(() =>
             {
-                var amount = Convert.ToDecimal(EntryModel.Amount);
-                var finalAmount = amount > 0 ? -amount : amount;
-                EntryModel.Amount = Convert.ToString(finalAmount);
-                expenseRepository.AddExpenseEntry(EntryModel);
-                SummaryModel = expenseRepository.GetExpenseSummary();
-                OnPropertyChanged("SummaryModel");
-                EntryModel = new AddEntryModel();
-                OnPropertyChanged("EntryModel");
+                if (CanSubmitData())
+                {
+                    var amount = Convert.ToDecimal(EntryModel.Amount);
+                    var finalAmount = amount > 0 ? -amount : amount;
+                    EntryModel.Amount = Convert.ToString(finalAmount);
+                    expenseRepository.AddExpenseEntry(EntryModel);
+                    SummaryModel = expenseRepository.GetExpenseSummary();
+                    OnPropertyChanged("SummaryModel");
+                    EntryModel = new AddEntryModel();
+                    OnPropertyChanged("EntryModel");
+                    ErrorMessagePresenter();
+                }
+                else
+                {
+                    ErrorMessagePresenter("Invalid Input");
+                }
             });
+        }
+
+        public void ErrorMessagePresenter(string text = "")
+        {
+            if (string.IsNullOrWhiteSpace(text))
+            {
+                HasError = false;
+                ErrorMessage = string.Empty;
+            }
+            else
+            {
+                HasError = true;
+                ErrorMessage = text;
+            }
+            OnPropertyChanged("ErrorMessage");
+            OnPropertyChanged("HasError");
+        }
+
+        public bool CanSubmitData()
+        {
+            bool canSubmit;
+            try
+            {
+                canSubmit = !string.IsNullOrWhiteSpace(EntryModel.Amount)
+                    && !string.IsNullOrWhiteSpace(EntryModel.Note)
+                    && int.TryParse(EntryModel.Amount, out int intAmount);
+            }
+            catch (Exception)
+            {
+                canSubmit = false;
+            }
+            return canSubmit;
         }
 
     }
