@@ -31,32 +31,35 @@
                     <Label Text="{Binding SummaryModel.FutureMonthForecast}" FontSize="Title"/>
                 </StackLayout>
                 <StackLayout Margin="0,50,0,0" Padding="0,0,0,30" Background="rgb(220,220,220)">
-                    <Label HorizontalTextAlignment="Center" IsVisible="{Binding HasError}" BackgroundColor="#D50000" TextColor="#FFF" Text="{Binding ErrorMessage}"/>
-                    <StackLayout Padding="10">
-                    <Label FontSize="Large" FontAttributes="Bold" HorizontalTextAlignment="Center" Text="Add Expense"/>
-                    <Entry Text="{Binding EntryModel.Amount}" Keyboard="Numeric" FontSize="30" Placeholder="Eg. 100"/>
-                    <Entry Text="{Binding EntryModel.Note}" FontSize="Medium" Placeholder="Eg. Cold drink, Adjustments, etc."/>
-                    <StackLayout Orientation="Horizontal">
-                        <Label Padding="0,5,0,0" Text="Past Expense?"/>
-                        <CheckBox IsChecked="{Binding EntryModel.IsPastExpense}" />
-                    </StackLayout>
-
                     <StackLayout>
-                        <Grid>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="1" />
-                            </Grid.RowDefinitions>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="60" />
-                                <ColumnDefinition Width="170" />
-                                <ColumnDefinition Width="60" />
-                            </Grid.ColumnDefinitions>
-                            <Button Grid.Row="1" Command="{Binding AddPositiveExpense}" Grid.Column="0" CornerRadius="100" FontSize="30" Text="+"/>
-                            <Button Grid.Row="1" Command="{Binding AddNegativeExpense}" Grid.Column="2" CornerRadius="100" FontSize="30" Text="-"/>
-                        </Grid>
+                        <Label HorizontalTextAlignment="Center" IsVisible="{Binding HasError}" BackgroundColor="#D50000" TextColor="#FFF" Text="{Binding Message}"/>
+                        <Label HorizontalTextAlignment="Center" IsVisible="{Binding IsSuccessMessage}" BackgroundColor="#33691E" TextColor="#FFF" Text="{Binding Message}"/>
+                    </StackLayout>
+                    <StackLayout Padding="10">
+                        <Label FontSize="Large" FontAttributes="Bold" HorizontalTextAlignment="Center" Text="Add Expense"/>
+                        <Entry Text="{Binding EntryModel.Amount}" Keyboard="Numeric" FontSize="30" Placeholder="Eg. 100"/>
+                        <Entry Text="{Binding EntryModel.Note}" FontSize="Medium" Placeholder="Eg. Cold drink, Adjustments, etc."/>
+                        <StackLayout Orientation="Horizontal">
+                            <Label Padding="0,5,0,0" Text="Past Expense?"/>
+                            <CheckBox IsChecked="{Binding EntryModel.IsPastExpense}" />
+                        </StackLayout>
+
+                        <StackLayout>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="1" />
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="60" />
+                                    <ColumnDefinition Width="170" />
+                                    <ColumnDefinition Width="60" />
+                                </Grid.ColumnDefinitions>
+                                <Button Grid.Row="1" Command="{Binding AddPositiveExpense}" Grid.Column="0" CornerRadius="100" FontSize="30" Text="+"/>
+                                <Button Grid.Row="1" Command="{Binding AddNegativeExpense}" Grid.Column="2" CornerRadius="100" FontSize="30" Text="-"/>
+                            </Grid>
+                        </StackLayout>
                     </StackLayout>
                 </StackLayout>
-            </StackLayout>
             </StackLayout>
         </ScrollView>
     </Grid>

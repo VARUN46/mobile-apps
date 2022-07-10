@@ -16,8 +16,9 @@ namespace App.ViewModels
         public ExpenseSummaryModel SummaryModel { get; set; }
         public ICommand AddPositiveExpense { get; set; }
         public ICommand AddNegativeExpense { get; set; }
-        public string ErrorMessage { get; set; }
+        public string Message { get; set; }
         public bool HasError { get; set; }
+        public bool IsSuccessMessage { get; set; }
 
         private IExpenseRepository expenseRepository;
 
@@ -37,11 +38,11 @@ namespace App.ViewModels
                     OnPropertyChanged("SummaryModel");
                     EntryModel = new AddEntryModel();
                     OnPropertyChanged("EntryModel");
-                    ErrorMessagePresenter();
+                    PresentMessage("Entry Added!", false);
                 }
                 else
                 {
-                    ErrorMessagePresenter("Invalid Input");
+                    PresentMessage("Invalid Input");
                 }
 
             });
@@ -60,29 +61,32 @@ namespace App.ViewModels
                     OnPropertyChanged("SummaryModel");
                     EntryModel = new AddEntryModel();
                     OnPropertyChanged("EntryModel");
-                    ErrorMessagePresenter();
+                    PresentMessage("Negative Entry Added!",false);
                 }
                 else
                 {
-                    ErrorMessagePresenter("Invalid Input");
+                    PresentMessage("Invalid Input");
                 }
             });
         }
 
-        public void ErrorMessagePresenter(string text = "")
+        public void PresentMessage(string text = "",bool isError = true)
         {
             if (string.IsNullOrWhiteSpace(text))
             {
                 HasError = false;
-                ErrorMessage = string.Empty;
+                Message = string.Empty;
+                IsSuccessMessage = false;
             }
             else
             {
-                HasError = true;
-                ErrorMessage = text;
+                HasError = isError;
+                Message = text;
+                IsSuccessMessage = !isError;
             }
-            OnPropertyChanged("ErrorMessage");
+            OnPropertyChanged("Message");
             OnPropertyChanged("HasError");
+            OnPropertyChanged("IsSuccessMessage");
         }
 
         public bool CanSubmitData()
