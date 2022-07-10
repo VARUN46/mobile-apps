@@ -2,6 +2,7 @@
 using App.Interfaces.Repository;
 using System;
 using System.ComponentModel;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Essentials;
@@ -30,11 +31,7 @@ namespace App.ViewModels
             {
                 if (CanSubmitData())
                 {
-                    var location = await Geolocation.GetLastKnownLocationAsync();
-                    if (location != null)
-                    {
-                        EntryModel.GeoLocation = $"Latitude: {location.Latitude}, Longitude: {location.Longitude}, Altitude: {location.Altitude}";
-                    }
+                    EntryModel.GeoLocation = await GetFormattedLocationAsync();
                     expenseRepository.AddExpenseEntry(EntryModel);
                     SummaryModel = expenseRepository.GetExpenseSummary();
                     OnPropertyChanged("SummaryModel");
@@ -53,11 +50,8 @@ namespace App.ViewModels
             {
                 if (CanSubmitData())
                 {
-                    var location = await Geolocation.GetLastKnownLocationAsync();
-                    if (location != null)
-                    {
-                        EntryModel.GeoLocation = $"Latitude: {location.Latitude}, Longitude: {location.Longitude}, Altitude: {location.Altitude}";
-                    }
+
+                    EntryModel.GeoLocation = await GetFormattedLocationAsync();
                     var amount = Convert.ToDecimal(EntryModel.Amount);
                     var finalAmount = amount > 0 ? -amount : amount;
                     EntryModel.Amount = Convert.ToString(finalAmount);
@@ -107,5 +101,20 @@ namespace App.ViewModels
             return canSubmit;
         }
 
+        public async Task<string> GetFormattedLocationAsync()
+        {
+            string locationFormatted = string.Empty;
+            var location = await Geolocation.GetLastKnownLocationAsync();
+            if (location != null)
+            {
+                var placemarks = await Geocoding.GetPlacemarksAsync(location.Latitude, location.Longitude);
+                var placemark = placemarks?.FirstOrDefault();
+                if (placemark != null)
+                    locationFormatted = $"{placemark.SubLocality}, {placemark.Locality}";
+            }
+            return locationFormatted;
+        }
+
     }
+
 }

@@ -72,7 +72,7 @@ namespace App.FacadeLayer.Repository
                             Id = entry.Id,
                             SummaryText = string.Format("{0} spent on {1}", entry.Amount, entry.NotedDate.ToString("ddd, d MMM yyyy")),
                             Note = entry.Note,
-                            GeoLocation = entry.GeoLocation
+                            GeoLocation = $"( Marked from {entry.GeoLocation} )"
                         }).ToList();
             }
             catch (Exception)
