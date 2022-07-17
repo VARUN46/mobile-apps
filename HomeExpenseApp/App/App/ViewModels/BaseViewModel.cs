@@ -8,6 +8,10 @@ namespace App.ViewModels
 {
     public class BaseViewModel : INotifyPropertyChanged
     {
+        public BaseViewModel()
+        {
+            var auth = new Xamarin.Auth.OAuth2Authenticator(AppSettings.GoogleOAuthKey, "", null, null);
+        }
      
         bool isBusy = false;
         public bool IsBusy
