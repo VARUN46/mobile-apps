@@ -1,4 +1,5 @@
-﻿using App.FacadeLayer.Repository;
+﻿using App.FacadeLayer;
+using App.FacadeLayer.Repository;
 using App.Interfaces.Repository;
 using App.Views;
 using System;
@@ -13,7 +14,7 @@ namespace App
         public App()
         {
             InitializeComponent();
-
+            DependencyService.Register<IDatabaseConnection, DatabaseConnection>();
             DependencyService.Register<IExpenseRepository, ExpenseRepository>();
             MainPage = new AppShell();
         }

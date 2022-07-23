@@ -9,6 +9,8 @@ namespace App.Entities.Core
         public string Note { get; set; }
         public DateTime UpdatedDate { get; set; }
         public DateTime NotedDate { get; set; }
+        public int NotedMonth { get; set; }
+        public int NotedYear { get; set; }
         public string GeoLocation { get; set; }
     }
 }
