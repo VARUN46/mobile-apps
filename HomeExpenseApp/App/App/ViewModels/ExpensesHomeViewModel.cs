@@ -27,10 +27,13 @@ namespace App.ViewModels
         {
             Title = "My Personal Expenses";
             EntryModel = new AddEntryModel();
-            SummaryModel = new ExpenseSummaryModel();
             expenseRepository = DependencyService.Get<IExpenseRepository>();
+            SummaryModel = expenseRepository.GetExpenseSummary();
+            OnPropertyChanged("SummaryModel");
+           
             AddPositiveExpense = new Command(async () =>
             {
+
                 if (CanSubmitData())
                 {
                     EntryModel.GeoLocation = await GetFormattedLocationAsync();
@@ -69,14 +72,6 @@ namespace App.ViewModels
                     PresentMessage("Invalid Input");
                 }
             });
-            /*var auth = DependencyService.Get<IAppAuthentication>();
-            auth.LoginWithGoogle();
-            if (auth.IsSignIn())
-            {
-            }
-            else
-            {
-            }*/
         }
 
         public void PresentMessage(string text = "",bool isError = true)

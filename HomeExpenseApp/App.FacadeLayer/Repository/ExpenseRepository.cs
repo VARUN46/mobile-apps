@@ -84,8 +84,10 @@ namespace App.FacadeLayer.Repository
                 var data = new List<EntrySummaryItemModel>();
                 try
                 {
+                    var qyear = month.Year;
+                    var qmonth = month.Month;
                     data = (from entry in databaseConnection.Table<ExpenseEntry>()
-                            .Where(c => c.NotedMonth == month.Month && c.NotedYear == month.Month)
+                            .Where(c => c.NotedMonth == qmonth && c.NotedYear == qyear)
                             .OrderByDescending(c => c.NotedDate)
                             .ToList()
                             select new EntrySummaryItemModel
