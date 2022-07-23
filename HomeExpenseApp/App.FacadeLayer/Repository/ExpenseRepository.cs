@@ -5,34 +5,46 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Linq;
+using SQLite;
 
 namespace App.FacadeLayer.Repository
 {
     public class ExpenseRepository : IExpenseRepository
     {
-        private static readonly List<ExpenseEntry> entries = new List<ExpenseEntry>();
+        private SQLiteConnection databaseConnection;
+        public static object lockObj = new object(); 
+
+        public ExpenseRepository(IDatabaseConnection databaseConnection)
+        {
+            this.databaseConnection = databaseConnection.GetConnection();
+        }
+        
         public bool AddExpenseEntry(AddEntryModel addEntryModel)
         {
-            bool isAdded = false;
-            try
+            lock (lockObj)
             {
-                var amount = Convert.ToDecimal(addEntryModel.Amount);
-                entries.Add(new ExpenseEntry
+                bool isAdded = false;
+                try
                 {
-                    Id = Guid.NewGuid(),
-                    Amount = Convert.ToDecimal(addEntryModel.Amount),
-                    Note = addEntryModel.Note,
-                    NotedDate = addEntryModel.IsPastExpense ? DateTime.Now.AddMonths(-1) : DateTime.Now,
-                    UpdatedDate = DateTime.Now,
-                    GeoLocation = addEntryModel.GeoLocation,
-                });
-                isAdded = true;
-            }
-            catch (Exception)
-            {
+                    var amount = Convert.ToDecimal(addEntryModel.Amount);
+                    databaseConnection.CreateTable<ExpenseEntry>();
+                    databaseConnection.Insert(new ExpenseEntry
+                    {
+                        Id = Guid.NewGuid(),
+                        Amount = Convert.ToDecimal(addEntryModel.Amount),
+                        Note = addEntryModel.Note,
+                        NotedDate = addEntryModel.IsPastExpense ? DateTime.Now.AddMonths(-1) : DateTime.Now,
+                        UpdatedDate = DateTime.Now,
+                        GeoLocation = addEntryModel.GeoLocation,
+                    });
+                    isAdded = true;
+                }
+                catch (Exception)
+                {
 
+                }
+                return isAdded;
             }
-            return isAdded;
         }
 
         public IEnumerable<EntrySummaryItemModel> GetAllExpenseEntries(int byLatestCount)
@@ -40,7 +52,7 @@ namespace App.FacadeLayer.Repository
             var data = new List<EntrySummaryItemModel>();
             try
             {
-                data = (from entry in entries
+                data = (from entry in databaseConnection.Table<ExpenseEntry>()
                             orderby entry.NotedDate descending
                             select new EntrySummaryItemModel
                             {
@@ -62,7 +74,7 @@ namespace App.FacadeLayer.Repository
             var data = new List<EntrySummaryItemModel>();
             try
             {
-                data = (from entry in entries
+                data = (from entry in databaseConnection.Table<ExpenseEntry>()
                         where entry.NotedDate.Month == month.Month
                         orderby entry.NotedDate descending
                         select new EntrySummaryItemModel
@@ -87,7 +99,7 @@ namespace App.FacadeLayer.Repository
             var entry = new EntryItemDetailsModel();
             try
             {
-                var entryData = entries.FirstOrDefault(c => c.Id == id);
+                var entryData = databaseConnection.Table<ExpenseEntry>().FirstOrDefault(c => c.Id == id);
                 entry = new EntryItemDetailsModel
                 {
                     Id = entryData.Id,
@@ -109,9 +121,9 @@ namespace App.FacadeLayer.Repository
             var summary = new ExpenseSummaryModel();
             try
             {
-                var currentMonthAmountSummary = entries.Where(c=>c.NotedDate.Month == DateTime.Now.Month).Sum(c => c.Amount);
+                var currentMonthAmountSummary = databaseConnection.Table<ExpenseEntry>().Where(c=>c.NotedDate.Month == DateTime.Now.Month).Sum(c => c.Amount);
                 summary.CurrentMonthSpent = string.Format("This month expense is {0}", currentMonthAmountSummary);
-                var pastMonthAmountSummary = entries.Where(c => c.NotedDate.Month == DateTime.Now.Month - 1).Sum(c => c.Amount);
+                var pastMonthAmountSummary = databaseConnection.Table<ExpenseEntry>().Where(c => c.NotedDate.Month == DateTime.Now.Month - 1).Sum(c => c.Amount);
                 summary.PreviousMonthSpent = string.Format("Previous month expense is {0}", pastMonthAmountSummary);
             }
             catch (Exception)
