@@ -1,4 +1,5 @@
 ﻿using App.Entities.Models;
+using App.Interfaces.Authentication;
 using App.Interfaces.Repository;
 using System;
 using System.ComponentModel;
@@ -68,6 +69,14 @@ namespace App.ViewModels
                     PresentMessage("Invalid Input");
                 }
             });
+            /*var auth = DependencyService.Get<IAppAuthentication>();
+            auth.LoginWithGoogle();
+            if (auth.IsSignIn())
+            {
+            }
+            else
+            {
+            }*/
         }
 
         public void PresentMessage(string text = "",bool isError = true)

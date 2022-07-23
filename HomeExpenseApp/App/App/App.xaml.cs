@@ -14,7 +14,6 @@ namespace App
         {
             InitializeComponent();
 
-            //   DependencyService.Register<MockDataStore>();
             DependencyService.Register<IExpenseRepository, ExpenseRepository>();
             MainPage = new AppShell();
         }

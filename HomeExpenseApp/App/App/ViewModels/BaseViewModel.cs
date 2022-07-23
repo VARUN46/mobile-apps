@@ -10,7 +10,6 @@ namespace App.ViewModels
     {
         public BaseViewModel()
         {
-            var auth = new Xamarin.Auth.OAuth2Authenticator(AppSettings.GoogleOAuthKey, "", null, null);
         }
      
         bool isBusy = false;
