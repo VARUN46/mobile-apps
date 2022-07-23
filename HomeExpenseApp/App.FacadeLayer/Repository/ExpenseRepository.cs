@@ -49,10 +49,12 @@ namespace App.FacadeLayer.Repository
 
         public IEnumerable<EntrySummaryItemModel> GetAllExpenseEntries(int byLatestCount)
         {
-            var data = new List<EntrySummaryItemModel>();
-            try
+            lock (lockObj)
             {
-                data = (from entry in databaseConnection.Table<ExpenseEntry>()
+                var data = new List<EntrySummaryItemModel>();
+                try
+                {
+                    data = (from entry in databaseConnection.Table<ExpenseEntry>()
                             orderby entry.NotedDate descending
                             select new EntrySummaryItemModel
                             {
@@ -61,76 +63,89 @@ namespace App.FacadeLayer.Repository
                                 Id = entry.Id
                             }).Take(byLatestCount).ToList();
 
-            }
-            catch (Exception)
-            {
+                }
+                catch (Exception)
+                {
 
+                }
+                return data;
             }
-            return data;
         }
 
         public IEnumerable<EntrySummaryItemModel> GetAllExpenseEntries(DateTime month)
         {
-            var data = new List<EntrySummaryItemModel>();
-            try
-            {
-                data = (from entry in databaseConnection.Table<ExpenseEntry>()
-                        where entry.NotedDate.Month == month.Month
-                        orderby entry.NotedDate descending
-                        select new EntrySummaryItemModel
-                        {
-                            Amount = entry.Amount,
-                            Date = entry.NotedDate.ToString("ddd, d MMM yyyy"),
-                            Id = entry.Id,
-                            SummaryText = string.Format("{0} spent on {1}", entry.Amount, entry.NotedDate.ToString("ddd, d MMM yyyy")),
-                            Note = entry.Note,
-                            GeoLocation = $"( Marked from {entry.GeoLocation} )"
-                        }).ToList();
-            }
-            catch (Exception)
+            lock (lockObj)
             {
 
+                var data = new List<EntrySummaryItemModel>();
+                try
+                {
+                    data = (from entry in databaseConnection.Table<ExpenseEntry>()
+                            where entry.NotedDate.Month == month.Month
+                            orderby entry.NotedDate descending
+                            select new EntrySummaryItemModel
+                            {
+                                Amount = entry.Amount,
+                                Date = entry.NotedDate.ToString("ddd, d MMM yyyy"),
+                                Id = entry.Id,
+                                SummaryText = string.Format("{0} spent on {1}", entry.Amount, entry.NotedDate.ToString("ddd, d MMM yyyy")),
+                                Note = entry.Note,
+                                GeoLocation = $"( Marked from {entry.GeoLocation} )"
+                            }).ToList();
+                }
+                catch (Exception)
+                {
+
+                }
+                return data;
             }
-            return data;
         }
 
         public EntryItemDetailsModel GetEntryItemDetails(Guid id)
         {
-            var entry = new EntryItemDetailsModel();
-            try
-            {
-                var entryData = databaseConnection.Table<ExpenseEntry>().FirstOrDefault(c => c.Id == id);
-                entry = new EntryItemDetailsModel
-                {
-                    Id = entryData.Id,
-                    Amount = entryData.Amount,
-                    Note = entryData.Note,
-                    NotedDate = entryData.NotedDate,
-                    UpdatedDate = entryData.UpdatedDate
-                };
-            }
-            catch (Exception)
+            lock (lockObj)
             {
 
+                var entry = new EntryItemDetailsModel();
+                try
+                {
+                    var entryData = databaseConnection.Table<ExpenseEntry>().FirstOrDefault(c => c.Id == id);
+                    entry = new EntryItemDetailsModel
+                    {
+                        Id = entryData.Id,
+                        Amount = entryData.Amount,
+                        Note = entryData.Note,
+                        NotedDate = entryData.NotedDate,
+                        UpdatedDate = entryData.UpdatedDate
+                    };
+                }
+                catch (Exception)
+                {
+
+                }
+                return entry;
             }
-            return entry;
         }
 
         public ExpenseSummaryModel GetExpenseSummary()
         {
-            var summary = new ExpenseSummaryModel();
-            try
-            {
-                var currentMonthAmountSummary = databaseConnection.Table<ExpenseEntry>().Where(c=>c.NotedDate.Month == DateTime.Now.Month).Sum(c => c.Amount);
-                summary.CurrentMonthSpent = string.Format("This month expense is {0}", currentMonthAmountSummary);
-                var pastMonthAmountSummary = databaseConnection.Table<ExpenseEntry>().Where(c => c.NotedDate.Month == DateTime.Now.Month - 1).Sum(c => c.Amount);
-                summary.PreviousMonthSpent = string.Format("Previous month expense is {0}", pastMonthAmountSummary);
-            }
-            catch (Exception)
+            lock (lockObj)
             {
 
+                var summary = new ExpenseSummaryModel();
+                try
+                {
+                    var currentMonthAmountSummary = databaseConnection.Table<ExpenseEntry>().Where(c => c.NotedDate.Month == DateTime.Now.Month).Sum(c => c.Amount);
+                    summary.CurrentMonthSpent = string.Format("This month expense is {0}", currentMonthAmountSummary);
+                    var pastMonthAmountSummary = databaseConnection.Table<ExpenseEntry>().Where(c => c.NotedDate.Month == DateTime.Now.Month - 1).Sum(c => c.Amount);
+                    summary.PreviousMonthSpent = string.Format("Previous month expense is {0}", pastMonthAmountSummary);
+                }
+                catch (Exception)
+                {
+
+                }
+                return summary;
             }
-            return summary;
         }
     }
 }
