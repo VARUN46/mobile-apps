@@ -63,8 +63,11 @@ namespace App.FacadeLayer.Repository
                             select new EntrySummaryItemModel
                             {
                                 Amount = entry.Amount,
-                                Date = entry.NotedDate.ToString("ddd,MMM yyyy"),
-                                Id = entry.Id
+                                Date = entry.NotedDate.ToString("ddd, d MMM yyyy"),
+                                Id = entry.Id,
+                                SummaryText = string.Format("{0} spent on {1}", entry.Amount, entry.NotedDate.ToString("ddd, d MMM yyyy")),
+                                Note = entry.Note,
+                                GeoLocation = $"( Marked from {entry.GeoLocation} )"
                             }).ToList();
 
                 }
@@ -144,7 +147,8 @@ namespace App.FacadeLayer.Repository
                 {
                     var currentMonthAmountSummary = databaseConnection.Table<ExpenseEntry>().Where(c => c.NotedMonth == DateTime.Now.Month).Sum(c => c.Amount);
                     summary.CurrentMonthSpent = string.Format("This month expense is {0}", currentMonthAmountSummary);
-                    var pastMonthAmountSummary = databaseConnection.Table<ExpenseEntry>().Where(c => c.NotedMonth == DateTime.Now.Month - 1).Sum(c => c.Amount);
+                    var pastMonth = DateTime.Now.Month - 1;
+                    var pastMonthAmountSummary = databaseConnection.Table<ExpenseEntry>().Where(c => c.NotedMonth == pastMonth).Sum(c => c.Amount);
                     summary.PreviousMonthSpent = string.Format("Previous month expense is {0}", pastMonthAmountSummary);
                 }
                 catch (Exception)

@@ -22,12 +22,13 @@
                 <ColumnDefinition Width="150"/>
             </Grid.ColumnDefinitions>
             <StackLayout Grid.Row="0" Grid.Column="0"  Orientation="Horizontal">
-                <Entry Keyboard="Numeric" Placeholder="10"/>
-                <Button Text="Pull Latest"/>
+                <Entry Text="{Binding PullEntriesInput}" Keyboard="Numeric" Placeholder="10"/>
+                <Button Command="{Binding PullLatestEntries}" Text="Pull"/>
             </StackLayout>
             <StackLayout Grid.Row="0" Grid.Column="1" Orientation="Horizontal">
-                <Entry Placeholder="June 2022"/>
-                <Button Text="By Month"/>
+                <Entry Text="{Binding Month}" Keyboard="Numeric" Placeholder="Month (MM)"/>
+                <Entry Text="{Binding Year}" Keyboard="Numeric" Placeholder="Year (YYYY)"/>
+                <Button Command="{Binding PullByMonthCommand}" Text="Pull"/>
             </StackLayout>
         </Grid>
         <StackLayout Orientation="Horizontal">
