@@ -36,7 +36,7 @@ namespace App.ViewModels
 
             PullByMonthCommand = new Command(() =>
             {
-                DateTime.TryParse($"01-{Month}-{Year}", out DateTime pullMonthDate);
+                DateTime.TryParse($"{Month}-01-{Year}", out DateTime pullMonthDate);
                 SummaryList = expenseRepository.GetAllExpenseEntries(pullMonthDate).ToList();
                 OnPropertyChanged("SummaryList");
             });

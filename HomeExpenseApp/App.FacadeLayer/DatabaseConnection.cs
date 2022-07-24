@@ -9,20 +9,20 @@ namespace App.FacadeLayer
 {
     public class DatabaseConnection : IDatabaseConnection
     {
-
-        private object locker = new object(); // class level private field
         public string GetDbPath()
         {
             var sqliteFilename = AppSettings.SQLiteDbFile;
-       //     #if __ANDROID__
+            #if __IOS__
                 // Just use whatever directory SpecialFolder.Personal returns
-                string libraryPath = Environment.GetFolderPath(Environment.SpecialFolder.Personal); ;
-         //   #else
                 // we need to put in /Library/ on iOS5.1 to meet Apple's iCloud terms
                 // (they don't want non-user-generated data in Documents)
                 string documentsPath = Environment.GetFolderPath(Environment.SpecialFolder.Personal); // Documents folder
-           //     string libraryPath = Path.Combine(documentsPath, "..", "Library"); // Library folder instead
-            //#endif
+                string libraryPath = Path.Combine(documentsPath, "..", "Library"); // Library folder instead
+      
+            #else
+                string libraryPath = Environment.GetFolderPath(Environment.SpecialFolder.Personal); ;
+
+            #endif
             var path = Path.Combine(libraryPath, sqliteFilename);
             return path;
         }

@@ -18,17 +18,19 @@
                 <RowDefinition Height="40" />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="150"/>
-                <ColumnDefinition Width="150"/>
+                <ColumnDefinition Width="120"/>
+                <ColumnDefinition Width="240"/>
             </Grid.ColumnDefinitions>
             <StackLayout Grid.Row="0" Grid.Column="0"  Orientation="Horizontal">
-                <Entry Text="{Binding PullEntriesInput}" Keyboard="Numeric" Placeholder="10"/>
-                <Button Command="{Binding PullLatestEntries}" Text="Pull"/>
+                <Entry WidthRequest="60" Text="{Binding PullEntriesInput}" Keyboard="Numeric" Placeholder="10"/>
+                <Button WidthRequest="60" Command="{Binding PullLatestEntries}" Text="Pull"/>
             </StackLayout>
             <StackLayout Grid.Row="0" Grid.Column="1" Orientation="Horizontal">
-                <Entry Text="{Binding Month}" Keyboard="Numeric" Placeholder="Month (MM)"/>
-                <Entry Text="{Binding Year}" Keyboard="Numeric" Placeholder="Year (YYYY)"/>
-                <Button Command="{Binding PullByMonthCommand}" Text="Pull"/>
+                <StackLayout WidthRequest="140" Padding="0" Orientation="Horizontal">
+                    <Entry WidthRequest="70" Text="{Binding Month}" Keyboard="Numeric" Placeholder="MM"/>
+                    <Entry WidthRequest="70" Text="{Binding Year}" Keyboard="Numeric" Placeholder="YYYY"/>
+                </StackLayout>
+                <Button WidthRequest="60" Command="{Binding PullByMonthCommand}" Text="Pull"/>
             </StackLayout>
         </Grid>
         <StackLayout Orientation="Horizontal">
