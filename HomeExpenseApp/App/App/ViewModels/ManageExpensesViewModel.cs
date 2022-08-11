@@ -21,6 +21,9 @@ namespace App.ViewModels
         public string Month { get; set; }
         public string Year { get; set; }
         public ICommand PullByMonthCommand { get; set; }
+        public ICommand CloseSelectedRegionCommand { get; set; }
+        public bool IsItemSelected { get; set; } = false;
+        public bool IsItemNotSelected { get; set; } = true;
 
         private object summaryItemSelected;
 
@@ -56,6 +59,11 @@ namespace App.ViewModels
                 SummaryList = expenseRepository.GetAllExpenseEntries(pullMonthDate).ToList();
                 OnPropertyChanged("SummaryList");
             });
+
+            CloseSelectedRegionCommand = new Command(() =>
+            {
+                ShowSelectionWindow(false);
+            });
         }
 
         public void OnAppearing()
@@ -66,9 +74,18 @@ namespace App.ViewModels
 
         public void OnItemSelected(EntrySummaryItemModel itemModel)
         {
-
+            ShowSelectionWindow(true);
+            var selectedItem = expenseRepository.GetEntryItemDetails(itemModel.Id);
         }
 
+        private void ShowSelectionWindow(bool canShow)
+        {
+            IsItemNotSelected = !canShow;
+            IsItemSelected = canShow;
+            OnPropertyChanged("IsItemNotSelected");
+            OnPropertyChanged("IsItemSelected");
+
+        }
 
     }
 }

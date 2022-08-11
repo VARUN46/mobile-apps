@@ -13,7 +13,12 @@
       https://docs.microsoft.com/xamarin/xamarin-forms/app-fundamentals/data-binding/compiled-bindings
     -->
     <StackLayout Margin="10">
-        <Grid>
+        <StackLayout IsVisible="{Binding IsItemSelected}">
+            <Button Text="Close" Command="{Binding CloseSelectedRegionCommand}"/>
+            <Label Text="Selected Item" />
+        </StackLayout>
+        <StackLayout IsVisible="{Binding IsItemNotSelected}">
+            <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="40" />
             </Grid.RowDefinitions>
@@ -52,5 +57,6 @@
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
+        </StackLayout>
     </StackLayout>
 </ContentPage>
