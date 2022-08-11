@@ -22,11 +22,27 @@ namespace App.ViewModels
         public string Year { get; set; }
         public ICommand PullByMonthCommand { get; set; }
 
+        private object summaryItemSelected;
+
+        public object SummaryItemSelected
+        {
+            get { return summaryItemSelected; }
+            set
+            {
+                summaryItemSelected = value;
+                if (summaryItemSelected != null && summaryItemSelected is EntrySummaryItemModel)
+                {
+                    OnItemSelected(summaryItemSelected as EntrySummaryItemModel);
+                }
+            }
+        }
+
+
         public ManageExpensesViewModel()
         {
             Title = "Manage Expenses";
             expenseRepository = DependencyService.Get<IExpenseRepository>();
-            
+
             PullLatestEntries = new Command(() =>
             {
                 int.TryParse(PullEntriesInput, out int pullCount);
@@ -47,6 +63,12 @@ namespace App.ViewModels
             SummaryList = expenseRepository.GetAllExpenseEntries(DateTime.Now).ToList();
             OnPropertyChanged("SummaryList");
         }
+
+        public void OnItemSelected(EntrySummaryItemModel itemModel)
+        {
+
+        }
+
 
     }
 }
