@@ -1,11 +1,11 @@
-import {StyleSheet} from 'react-native';
-
+/* eslint-disable prettier/prettier */
+import { StyleSheet } from 'react-native';
 const appTheme = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: 'whitesmoke'
+    backgroundColor: 'whitesmoke',
   },
   bigBlue: {
     color: 'blue',
